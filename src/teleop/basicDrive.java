@@ -51,8 +51,10 @@ public class basicDrive extends templates.TeleopProgram {
 		polybot.setRightPower(rightPower);
 		
 		SmartDashboard.putNumber("botYaw", polybot.getYaw());
-		
-		
+		SmartDashboard.putNumber("Drive Power", drivePower);
+		SmartDashboard.putNumber("Steer Power", steerPower);
+		SmartDashboard.putNumber("Right Power", rightPower);
+		SmartDashboard.putNumber("Left Power"), leftPower);
 	}
 
 	@Override
