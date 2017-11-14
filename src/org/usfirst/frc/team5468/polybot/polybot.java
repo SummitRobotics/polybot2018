@@ -128,15 +128,8 @@ public class polybot {
 	//TODO Make the getYaw() method actually work
 	
 	public double getYaw() {
-		
 		rawYawAngle = gyro.getAngle();
-		if(rawYawAngle > 360 || rawYawAngle < 0) {
-			overAngleCount = rawYawAngle / 360;
-		}
-		else {
-			overAngleCount = 0;
-		}
-		return rawYawAngle - (overAngleCount * 360);
+		return rawYawAngle % 360;
 	}
 
 }
