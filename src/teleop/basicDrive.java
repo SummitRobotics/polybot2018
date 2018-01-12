@@ -52,7 +52,7 @@ public class basicDrive extends templates.TeleopProgram {
 		
 		SmartDashboard.putNumber("Bot Yaw", polybot.getYaw());
 		SmartDashboard.putNumber("Right Power", rightPower);
-		SmartDashboard.putNumber("Left Power"), leftPower);
+		SmartDashboard.putNumber("Left Power", leftPower);
 	}
 
 	@Override

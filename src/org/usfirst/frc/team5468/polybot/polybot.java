@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5468.polybot;
 
-import com.ctre.CANTalon;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -36,10 +36,10 @@ public class polybot {
 	// anything below here.                      //
 	//-------------------------------------------//
 	
-	public CANTalon blDrive;
-	public CANTalon flDrive;
-	public CANTalon brDrive;
-	public CANTalon frDrive;
+	public TalonSRX blDrive;
+	public TalonSRX flDrive;
+	public TalonSRX brDrive;
+	public TalonSRX frDrive;
 	
 	private ADXRS450_Gyro gyro;
 	
@@ -55,10 +55,10 @@ public class polybot {
 		
 		try {
 			
-			blDrive = new CANTalon(blDriveId);
-			flDrive = new CANTalon(flDriveId);
-			brDrive = new CANTalon(brDriveId);
-			frDrive = new CANTalon(frDriveId);
+			blDrive = new TalonSRX(blDriveId);
+			flDrive = new TalonSRX(flDriveId);
+			brDrive = new TalonSRX(brDriveId);
+			frDrive = new TalonSRX(frDriveId);
 			
 			gyro = new ADXRS450_Gyro();
 			
@@ -68,7 +68,7 @@ public class polybot {
 			
 		}
 		
-		//Attempt to create joysticks. We do this seperatly to ensure that a missing second joystick does not crash all the code
+		//Attempt to create joysticks.
 		
 		try{
 			gamepad1 = new Joystick(0);
@@ -88,32 +88,17 @@ public class polybot {
 	
 	//Sets the power for both left drive motors
 	public void setLeftPower(double power){
-		blDrive.set(power);
-		flDrive.set(power);
+		blDrive.set(ControlMode.PercentOutput, power);
+		flDrive.set(ControlMode.PercentOutput, power);
 	}
 	
 	//Sets the power for both right drive motors
 	public void setRightPower(double power){
-		brDrive.set(power);
-		frDrive.set(power);
+		brDrive.set(ControlMode.PercentOutput,power);
+		frDrive.set(ControlMode.PercentOutput,power);
 	}
 	
-	//Enable all motors
-	public void enableAllMotors(){
-		blDrive.enable();
-		flDrive.enable();
-		brDrive.enable();
-		frDrive.enable();
-	}
-	
-	//Disable all motors
-	public void edisableAllMotors(){
-		blDrive.disable();
-		flDrive.disable();
-		brDrive.disable();
-		frDrive.disable();
-	}
-	
+
 	//Creates an exponential curve from a value. Mainly used for joystick input
 	public double toExponential(double value, double exponent)
 	{
@@ -122,14 +107,10 @@ public class polybot {
 		return value;
 	}
 	
-	double rawYawAngle;
-	double overAngleCount;
-	
 	//TODO Make the getYaw() method actually work
 	
 	public double getYaw() {
-		rawYawAngle = gyro.getAngle();
-		return rawYawAngle % 360;
+		return gyro.getAngle() % 360;
 	}
 
 }
