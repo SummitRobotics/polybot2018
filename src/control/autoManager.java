@@ -53,6 +53,14 @@ public class autoManager {
 		//TODO Implement pivot rotation
 	}
 	
+	public void dropCube() {
+		//Empty method just for the example.
+	}
+	
+	public boolean isDone() {
+		return trajectoryState >= totalTrajectoryPoints;
+	}
+	
 	public void end() {
 		trajectoryClosed = true;
 		if(leftTrajectoryList.size() != rightTrajectoryList.size()) {
