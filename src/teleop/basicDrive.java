@@ -2,6 +2,8 @@ package teleop;
 
 import org.usfirst.frc.team5468.polybot.polybot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class basicDrive extends templates.TeleopProgram {
@@ -47,8 +49,8 @@ public class basicDrive extends templates.TeleopProgram {
 		leftPower = drivePower - steerPower;
 		rightPower = drivePower * -1 - steerPower;
 		
-		polybot.setLeftPower(leftPower);
-		polybot.setRightPower(rightPower);
+		polybot.leftDrive.set(ControlMode.PercentOutput, leftPower);
+		polybot.rightDrive.set(ControlMode.PercentOutput, rightPower);
 		
 		SmartDashboard.putNumber("Bot Yaw", polybot.getYaw());
 		SmartDashboard.putNumber("Right Power", rightPower);

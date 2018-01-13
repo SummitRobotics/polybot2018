@@ -36,10 +36,10 @@ public class polybot {
 	// anything below here.                      //
 	//-------------------------------------------//
 	
-	public TalonSRX blDrive;
-	public TalonSRX flDrive;
-	public TalonSRX brDrive;
-	public TalonSRX frDrive;
+	private TalonSRX blDrive;
+	public TalonSRX leftDrive;
+	private TalonSRX brDrive;
+	public TalonSRX rightDrive;
 	
 	private ADXRS450_Gyro gyro;
 	
@@ -56,9 +56,9 @@ public class polybot {
 		try {
 			
 			blDrive = new TalonSRX(blDriveId);
-			flDrive = new TalonSRX(flDriveId);
+			leftDrive = new TalonSRX(flDriveId);
 			brDrive = new TalonSRX(brDriveId);
-			frDrive = new TalonSRX(frDriveId);
+			rightDrive = new TalonSRX(frDriveId);
 			
 			gyro = new ADXRS450_Gyro();
 			
@@ -77,6 +77,11 @@ public class polybot {
 		catch(Exception e){
 			
 		}
+		
+		//Setup the Leader/Follow config. You should never have to individually touch the rear motors.
+		blDrive.follow(leftDrive);
+		brDrive.follow(rightDrive);
+		
 	
 	}
 	
@@ -85,19 +90,7 @@ public class polybot {
 	// easier. Read the comments for info    //
 	// on each specific method               //
 	//---------------------------------------//
-	
-	//Sets the power for both left drive motors
-	public void setLeftPower(double power){
-		blDrive.set(ControlMode.PercentOutput, power);
-		flDrive.set(ControlMode.PercentOutput, power);
-	}
-	
-	//Sets the power for both right drive motors
-	public void setRightPower(double power){
-		brDrive.set(ControlMode.PercentOutput,power);
-		frDrive.set(ControlMode.PercentOutput,power);
-	}
-	
+
 
 	//Creates an exponential curve from a value. Mainly used for joystick input
 	public double toExponential(double value, double exponent)

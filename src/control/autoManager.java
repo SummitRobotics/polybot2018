@@ -89,16 +89,16 @@ public class autoManager {
 		rightDone = false;
 		
 		//Tell the encoders the values to move to again
-		robot.flDrive.set(ControlMode.MotionMagic, leftTrajectoryList.get(trajectoryState));
-		robot.frDrive.set(ControlMode.MotionMagic, rightTrajectoryList.get(trajectoryState));
+		robot.leftDrive.set(ControlMode.MotionMagic, leftTrajectoryList.get(trajectoryState));
+		robot.rightDrive.set(ControlMode.MotionMagic, rightTrajectoryList.get(trajectoryState));
 		
 		//Check if the left side has reached its target
-		if(robot.flDrive.getClosedLoopError(0) < finishedError) {
+		if(robot.leftDrive.getClosedLoopError(0) < finishedError) {
 			leftDone = true;
 		} 
 		
 		//Then check the right side
-		if(robot.frDrive.getClosedLoopError(0) < finishedError) {
+		if(robot.rightDrive.getClosedLoopError(0) < finishedError) {
 			rightDone = true;
 		} 
 				
