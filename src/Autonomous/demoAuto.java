@@ -36,7 +36,7 @@ public class demoAuto extends templates.AutoProgram {
 		demoAuto.run();
 		
 		if(demoAuto.isDone()) {
-			//Signal that its done or something. The autoManager should stop the robot by itself.
+			//You can now do something here if you want, the robot should had stopped itself by this point.
 		}
 	}
 

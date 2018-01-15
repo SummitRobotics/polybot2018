@@ -8,16 +8,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class autoManager {
 
-	private double maxAccel = 400;
-	private double maxVelo = 400;
-	
 	private polybot robot;
 	
 	//TODO Set the error to finish that trajectory point
 	private static double finishedError = 0;
 	
-	private List<Integer> leftTrajectoryList;
-	private List<Integer> rightTrajectoryList;
+	private List<trajectoryPoint> trajectoryPointList;
 	
 	private int trajectoryState;
 	private int lastTrajectoryState;
@@ -41,8 +37,8 @@ public class autoManager {
 	}
 	
 	public void addStraight(double distance) {
-		leftTrajectoryList.add(inchesToEncoder(distance));
-		rightTrajectoryList.add(inchesToEncoder(distance));
+
+		trajectoryPointList.add( new trajectoryPoint(inchesToEncoder(distance),inchesToEncoder(distance)) );
 	}
 	
 	public void addArc(double radius, int angle) {
@@ -63,12 +59,7 @@ public class autoManager {
 	
 	public void end() {
 		trajectoryClosed = true;
-		if(leftTrajectoryList.size() != rightTrajectoryList.size()) {
-			//TODO implement error logging
-			//The left and right trajectory lists must ALWAYS be the same size. This will stop you from running auto in the future
-			//if there is a mismatch in size.
-		}
-		totalTrajectoryPoints = leftTrajectoryList.size();
+		totalTrajectoryPoints = trajectoryPointList.size();
 	}
 	
 	private int inchesToEncoder(double distance) {
@@ -84,13 +75,18 @@ public class autoManager {
 	}
 	
 	public void run() {
+
+		//The trajectory path must be closed before it will run. Call end() after defining all points
+		if(!trajectoryClosed) {
+			return;
+		}
 		
 		leftDone = false;
 		rightDone = false;
 		
 		//Tell the encoders the values to move to again
-		robot.leftDrive.set(ControlMode.MotionMagic, leftTrajectoryList.get(trajectoryState));
-		robot.rightDrive.set(ControlMode.MotionMagic, rightTrajectoryList.get(trajectoryState));
+		robot.leftDrive.set(ControlMode.MotionMagic, trajectoryPointList.get(trajectoryState).getLeftTargetPoint());
+		robot.rightDrive.set(ControlMode.MotionMagic, trajectoryPointList.get(trajectoryState).getRightTargetPoint());
 		
 		//Check if the left side has reached its target
 		if(robot.leftDrive.getClosedLoopError(0) < finishedError) {
