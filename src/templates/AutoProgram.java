@@ -1,20 +1,58 @@
 package templates;
 
-import org.usfirst.frc.team5468.polybot.polybot;
+import org.usfirst.frc.team5468.robot.Hardware;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+import sequencing.Sequence;
 
 public abstract class AutoProgram {
-	
-	public polybot mainRobot;
-	public String programName;
-	public AutoProgram(polybot robot,String name)
+	protected Hardware robot;
+	private String programName;
+	protected Sequence commands;
+	private boolean modeDisabled = false;
+
+	public AutoProgram(Hardware r, String name)
 	{
-		mainRobot = robot;
+		robot = r;
 		programName = name;
 	}
 	
-	public abstract void autonomousInit();
-	public abstract void autonomousPeriodic();
-	public abstract void autonomousDisabledInit();
-	public abstract void autonomousDisabledPeriodic();
+	public final void autonomousInit() {
+		setupComponents();
+		addActions();
+	}
 	
+	private final void setupComponents() {
+		if(robot.winchEnabled) {
+			//robot.winch.set(ControlMode.PercentOutput, robot.variables.getWinchMinPower());
+		}
+		if(robot.pneumaticsEnabled) {
+			robot.clamp.set(DoubleSolenoid.Value.kForward);
+			robot.extender.set(DoubleSolenoid.Value.kReverse);
+			//robot.ramp.set(false);
+		}
+		commands = new Sequence(robot);
+	}
+	
+	public abstract void addActions();
+	
+	public final void autonomousPeriodic() {
+		if(!commands.isFinished() && !modeDisabled) {
+			commands.run();
+		}
+	}
+	
+	public final void autonomousDisabledInit() {
+		robot.leftDrive.set(ControlMode.PercentOutput, 0);
+		robot.rightDrive.set(ControlMode.PercentOutput, 0);
+		commands = new Sequence(robot);
+		modeDisabled = true;
+	}
+	
+	public final String getName() {
+		return programName;
+	}
+
 }

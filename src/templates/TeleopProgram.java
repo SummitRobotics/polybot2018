@@ -1,13 +1,14 @@
 package templates;
 
-import org.usfirst.frc.team5468.polybot.polybot;
+import org.usfirst.frc.team5468.robot.Hardware;
 
 public abstract class TeleopProgram {
-	public polybot mainRobot;
+	public Hardware robot;
 	public String programName;
-	public TeleopProgram(polybot robot,String name)
+	
+	public TeleopProgram(Hardware r,String name)
 	{
-		mainRobot = robot;
+		robot = r;
 		programName = name;
 	}
 	
@@ -15,5 +16,8 @@ public abstract class TeleopProgram {
 	public abstract void teleopPeriodic();
 	public abstract void teleopDisabledInit();
 	public abstract void teleopDisabledPeriodic();
+	public String getName() {
+		return programName;
+	}
 }
 
